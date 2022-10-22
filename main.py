@@ -59,7 +59,7 @@ def ChangeState():
         playsound(Folder + '/state_changed.mp3')
 
     else:
-        print(Fore.RED + 'Продолжение работы')
+        print(Fore.CYAN + 'Продолжение работы')
         playsound(Folder + '/state_changed.mp3')
         AddHotkeys()
 
