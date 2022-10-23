@@ -6,11 +6,14 @@ from playsound import playsound
 from os.path import split
 from random import choice, randint
 from os import _exit
-from ctypes import windll
-from threading import Thread
+from os import name
 
-Thread(target=lambda:windll.user32.MessageBoxW(0, 'Ctrl+Shift+S - Пауза/Продолжить\n' + \
-                             'Ctrl+Shift+E - Закрыть', 'ScaryType', 0x40 | 0x10000)).start()
+if name == 'nt':
+    from threading import Thread
+    from ctypes import windll
+    Thread(target=lambda:windll.user32.MessageBoxW(0, 'Ctrl+Shift+S - Пауза/Продолжить\n' + \
+                                'Ctrl+Shift+E - Закрыть', 'ScaryType', 0x40 | 0x10000)).start()
+
 
 Folder = split(__file__)[0].replace('\\', '/')
 
@@ -51,12 +54,17 @@ def AddHotkeys():
     add_hotkey('l', callback=lambda: WriteLetter('d'), suppress=True)
     add_hotkey('r', callback=lambda: WriteLetter('k'), suppress=True)
     add_hotkey('j', callback=lambda: WriteLetter('0'), suppress=True)
+    add_hotkey('.', callback=lambda: _write('ю'), suppress=True)
 
     try:
         add_hotkey('ё', callback=lambda: WriteLetter('ё'), suppress=True)
 
     except:
-        add_hotkey('~', callback=lambda: WriteLetter('ё'), suppress=True)
+        try:
+            add_hotkey('~', callback=lambda: WriteLetter('ё'), suppress=True)
+
+        except:
+            pass
 
 
 def RemoveHotkeys():
@@ -72,12 +80,17 @@ def RemoveHotkeys():
     remove_hotkey('l')
     remove_hotkey('r')
     remove_hotkey('j')
+    remove_hotkey('.')
 
     try:
         remove_hotkey('ё')
 
     except:
-        remove_hotkey('~')
+        try:
+            remove_hotkey('~')
+
+        except:
+            pass
 
 
 def ChangeState():
